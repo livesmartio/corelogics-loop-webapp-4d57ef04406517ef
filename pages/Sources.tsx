@@ -1,6 +1,4 @@
 import { CheckCircle2, FileUp, MoreHorizontal, Plug, Plus, RefreshCw, Upload } from "lucide-react";
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -10,6 +8,10 @@ import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Switch } from "../components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+
 import ConnectorStatusBadge from "../components/ConnectorStatusBadge";
 
 export default function Sources() {

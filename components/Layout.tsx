@@ -1,29 +1,18 @@
-import {
-  Activity,
-  Download,
-  GitCompare,
-  History,
-  LayoutDashboard,
-  PlayCircle,
-  Plug,
-  Settings as SettingsIcon,
-} from "lucide-react";
+import { Activity, Aperture, Download, GitCompare, History, LayoutDashboard, PlayCircle, Plug, SettingsIcon } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
-import { Separator } from "./ui/separator";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
 } from "./ui/sidebar";
 
 export default function Layout() {
@@ -47,32 +36,45 @@ export default function Layout() {
     )?.label ?? "CoreLogics LOOP Webapp";
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen w-full bg-background text-foreground">
-        <Sidebar>
-          <SidebarContent className="bg-sidebar text-sidebar-foreground">
-            <SidebarGroup>
-              <SidebarGroupLabel className="px-2 text-sm font-semibold text-sidebar-foreground/90">
+    <SidebarProvider defaultOpen>
+      <div className="flex min-h-screen w-full bg-background text-foreground">
+        <Sidebar collapsible="icon" className="border-r bg-card">
+          <SidebarHeader className="h-14 justify-center border-b px-4 group-data-[collapsible=icon]:px-2">
+            <NavLink
+              to="/"
+              end
+              className="flex h-10 items-center rounded-md px-2 text-sidebar-foreground/95 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+            >
+              <Aperture className="h-5 w-5 shrink-0" />
+              <span className="ml-2 truncate text-base font-bold tracking-tight group-data-[collapsible=icon]:hidden">
                 {projectName}
-              </SidebarGroupLabel>
+              </span>
+            </NavLink>
+          </SidebarHeader>
+          <SidebarContent className="bg-sidebar text-sidebar-foreground">
+            <SidebarGroup className="pt-0">
               <SidebarGroupContent>
                 <SidebarMenu>
                   {navigation.map((item) => {
                     const Icon = item.icon;
                     return (
                       <SidebarMenuItem key={item.route}>
-                        <SidebarMenuButton asChild>
+                        <SidebarMenuButton asChild tooltip={item.label}>
                           <NavLink
                             to={item.route}
                             end={item.route === "/"}
                             className={({ isActive }) =>
                               isActive
-                                ? "flex items-center gap-2 rounded-md bg-sidebar-primary px-2 py-1.5 text-sidebar-primary-foreground"
-                                : "flex items-center gap-2 rounded-md px-2 py-1.5 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                                ? "bg-sidebar-accent text-sidebar-accent-foreground font-bold"
+                                : "text-sidebar-foreground font-medium"
                             }
                           >
-                            <Icon className="h-4 w-4" />
-                            <span>{item.label}</span>
+                            {({ isActive }) => (
+                              <>
+                                <Icon className="h-4 w-4" strokeWidth={isActive ? 2.6 : 2} />
+                                <span className={isActive ? "font-bold" : "font-medium"}>{item.label}</span>
+                              </>
+                            )}
                           </NavLink>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
@@ -84,13 +86,8 @@ export default function Layout() {
           </SidebarContent>
         </Sidebar>
 
-        <SidebarInset>
+        <SidebarInset className="min-w-0 flex-1">
           <div className="flex min-h-screen w-full min-w-0 flex-col bg-background">
-            <div className="flex items-center gap-2 border-b px-4 py-2 md:px-6">
-              <SidebarTrigger />
-              <Separator orientation="vertical" className="h-4" />
-              <p className="text-sm font-medium text-muted-foreground">Operations Console</p>
-            </div>
             <Header title={currentTitle} />
             <main className="w-full min-w-0 flex-1 p-4 md:p-6">
               <Outlet />
